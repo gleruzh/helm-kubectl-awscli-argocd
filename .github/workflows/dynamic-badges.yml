@@ -1,0 +1,32 @@
+name: Add Badges
+on:
+  push:
+    branches:
+      - master
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read environment file
+        run: cat .env >> ${GITHUB_ENV}
+      - name: Update badges
+        uses: wow-actions/add-badges@v1
+        env:
+          repo_url: ${{ github.event.repository.html_url }}
+          repo_name: ${{ github.event.repository.name }}
+          repo_owner: ${{ github.event.repository.owner.login }}
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          badges: |
+            [
+              {
+                "badge": "https://img.shields.io/github/license/${{ env.repo_owner }}/${{ env.repo_name }}?style=flat-square",
+                "alt": "MIT License",
+                "link": "${{ env.repo_url }}/blob/master/LICENSE"
+              },
+              {
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=black&message=helm-v${HELM_RELEASE}&color=0076D6&style=flat-square&logo=helm&logoColor=blue",
+                "alt": "Helm version",
+                "link": "https://github.com/helm/helm/releases/tag/v${{HELM_VERSION}}"
+              }
+            ]
