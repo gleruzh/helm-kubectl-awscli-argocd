@@ -52,22 +52,22 @@ jobs:
                 "link": "${{ env.repo_url }}/blob/master/LICENSE"
               },
               {
-                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=helm-v${{ env.HELM_VERSION }}&color=#0F1689&style=flat-square&logo=helm&logoColor=#0F1689",
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=helm-v${{ env.HELM_VERSION }}&color=0F1689&style=flat-square&logo=helm&logoColor=0F1689",
                 "alt": "Helm version",
                 "link": "https://github.com/helm/helm/releases/tag/v${{ env.HELM_VERSION }}"
               },
               {
-                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=kubernetes-v${{ env.KUBE_VERSION }}&color=#326CE5&style=flat-square&logo=kubernetes&logoColor=#326CE5",
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=kubernetes-v${{ env.KUBE_VERSION }}&color=326CE5&style=flat-square&logo=kubernetes&logoColor=326CE5",
                 "alt": "Kubectl version",
                 "link": "https://github.com/kubernetes/kubernetes/releases/tag/v${{ env.KUBE_VERSION }}"
               },
               {
-                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=argocd-v${{ env.ARGOCD_VERSION }}&color=#EF7B4D&style=flat-square&logo=argo&logoColor=#EF7B4D",
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=argocd-v${{ env.ARGOCD_VERSION }}&color=EF7B4D&style=flat-square&logo=argo&logoColor=EF7B4D",
                 "alt": "ArgoCD CLI version",
                 "link": "https://github.com/argoproj/argo-cd/releases/tag/v${{ env.ARGOCD_VERSION }}"
               },
               {
-                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=awscli-v${{ env.AWSCLI_VERSION }}&color=#232F3E&style=flat-square&logo=argo&logoColor=#232F3E",
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=awscli-v${{ env.AWSCLI_VERSION }}&color=232F3E&style=flat-square&logo=argo&logoColor=232F3E",
                 "alt": "AWS CLI version",
                 "link": "https://github.com/aws/aws-cli/releases/tag/${{ env.AWSCLI_VERSION }}"
               },
