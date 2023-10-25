@@ -13,11 +13,16 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Read environment file
         run: cat .env >> ${GITHUB_ENV}
       - name: Update badges
         uses: wow-actions/add-badges@v1
         env:
+          KUBE_VERSION: ${{ env.KUBE_VERSION }}
+          HELM_VERSION: ${{ env.HELM_VERSION }}
+          YQ_VERSION: ${{ env.YQ_VERSION }}
           repo_url: ${{ github.event.repository.html_url }}
           repo_name: ${{ github.event.repository.name }}
           repo_owner: ${{ github.event.repository.owner.login }}
