@@ -23,7 +23,7 @@ jobs:
             value=$(echo -n "$value" | tr -d '\r\n')
             echo "$key=$value" >> $GITHUB_ENV
           done < .env
-          shell: bash
+        shell: bash
       - name: Verify Versions
         run: |
           echo "KUBE_VERSION is $KUBE_VERSION"
