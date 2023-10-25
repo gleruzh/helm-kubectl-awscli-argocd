@@ -2,7 +2,7 @@
 <!-- [START BADGES] -->
 <!-- Please keep comment here to allow auto update -->
 [![MIT License](https://img.shields.io/github/license/gleruzh/helm-kubectl-awscli-argocd?style=flat-square)](https://github.com/gleruzh/helm-kubectl-awscli-argocd/blob/master/LICENSE)
-[![Helm version](https://img.shields.io/static/v1?label=&labelColor=black&message=helm-v&color=0076D6&style=flat-square&logo=helm&logoColor=blue)](https://github.com/helm/helm/releases/tag/v)
+[![Helm version](https://img.shields.io/static/v1?label=&labelColor=black&message=helm-v3.12.0&color=0076D6&style=flat-square&logo=helm&logoColor=blue)](https://github.com/helm/helm/releases/tag/v3.12.0)
 <!-- [END BADGES] -->
 ## helm-kubernetes Docker image with the AWS CLI and ArgoCD CLI
 This is a fork of
