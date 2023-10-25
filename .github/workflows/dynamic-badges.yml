@@ -16,7 +16,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Read environment file
-        run: cat .env >> ${GITHUB_ENV}
+        run: |
+          KUBE_VERSION=$(grep KUBE_VERSION .env | cut -d'=' -f2)
+          KUBE_VERSION=$(echo "$KUBE_VERSION" | tr -d '\n')
+          echo "KUBE_VERSION=$KUBE_VERSION" >> $GITHUB_ENV
+
+          HELM_VERSION=$(grep HELM_VERSION .env | cut -d'=' -f2)
+          HELM_VERSION=$(echo "$HELM_VERSION" | tr -d '\n')
+          echo "HELM_VERSION=$HELM_VERSION" >> $GITHUB_ENV
+
+          YQ_VERSION=$(grep YQ_VERSION .env | cut -d'=' -f2)
+          YQ_VERSION=$(echo "$YQ_VERSION" | tr -d '\n')
+          echo "YQ_VERSION=$YQ_VERSION" >> $GITHUB_ENV
+
+          ARGOCD_VERSION=$(grep ARGOCD_VERSION .env | cut -d'=' -f2)
+          ARGOCD_VERSION=$(echo "$ARGOCD_VERSION" | tr -d '\n')
+          echo "ARGOCD_VERSION=$ARGOCD_VERSION" >> $GITHUB_ENV
+
+          AWSCLI_VERSION=$(grep AWSCLI_VERSION .env | cut -d'=' -f2)
+          AWSCLI_VERSION=$(echo "$AWSCLI_VERSION" | tr -d '\n')
+          echo "AWSCLI_VERSION=$AWSCLI_VERSION" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Verify Versions
+        run: |
+          echo "KUBE_VERSION is $KUBE_VERSION"
+          echo "HELM_VERSION is $HELM_VERSION"
+          echo "YQ_VERSION is $YQ_VERSION"
+          echo "ARGOCD_VERSION is $ARGOCD_VERSION"
+          echo "AWSCLI_VERSION is $AWSCLI_VERSION"
       - name: Update badges
         uses: wow-actions/add-badges@v1
         env:
