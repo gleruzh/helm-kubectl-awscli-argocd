@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cli-runner-deployment
+  labels:
+    app: cli-runner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cli-runner
+  template:
+    metadata:
+      labels:
+        app: cli-runner
+    spec:
+      containers:
+        - name: cli-runner
+          image: ghcr.io/gleruzh/helm-kubectl-awscli-argocd:latest
+          command:
+            - /bin/sh
+            - '-c'
+            - while true; do sleep 86400; done
+          tty: true
