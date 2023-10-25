@@ -17,27 +17,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Read environment file
         run: |
-          KUBE_VERSION=$(grep KUBE_VERSION .env | cut -d'=' -f2)
-          KUBE_VERSION=$(echo "$KUBE_VERSION" | tr -d '\n')
-          echo "KUBE_VERSION=$KUBE_VERSION" >> $GITHUB_ENV
-
-          HELM_VERSION=$(grep HELM_VERSION .env | cut -d'=' -f2)
-          HELM_VERSION=$(echo "$HELM_VERSION" | tr -d '\n')
-          echo "HELM_VERSION=$HELM_VERSION" >> $GITHUB_ENV
-
-          YQ_VERSION=$(grep YQ_VERSION .env | cut -d'=' -f2)
-          YQ_VERSION=$(echo "$YQ_VERSION" | tr -d '\n')
-          echo "YQ_VERSION=$YQ_VERSION" >> $GITHUB_ENV
-
-          ARGOCD_VERSION=$(grep ARGOCD_VERSION .env | cut -d'=' -f2)
-          ARGOCD_VERSION=$(echo "$ARGOCD_VERSION" | tr -d '\n')
-          echo "ARGOCD_VERSION=$ARGOCD_VERSION" >> $GITHUB_ENV
-
-          AWSCLI_VERSION=$(grep AWSCLI_VERSION .env | cut -d'=' -f2)
-          AWSCLI_VERSION=$(echo "$AWSCLI_VERSION" | tr -d '\n')
-          echo "AWSCLI_VERSION=$AWSCLI_VERSION" >> $GITHUB_ENV
-        shell: bash
-
+          while IFS= read -r line; do
+            key=$(echo $line | cut -d'=' -f1)
+            value=$(echo $line | cut -d'=' -f2)
+            value=$(echo -n "$value" | tr -d '\r\n')
+            echo "$key=$value" >> $GITHUB_ENV
+          done < .env
+          shell: bash
       - name: Verify Versions
         run: |
           echo "KUBE_VERSION is $KUBE_VERSION"
