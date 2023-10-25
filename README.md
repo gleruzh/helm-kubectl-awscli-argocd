@@ -1,3 +1,4 @@
+[![ci](https://github.com/gleruzh/helm-kubectl-awscli-argocd/actions/workflows/image-build-push.yml/badge.svg)](https://github.com/gleruzh/helm-kubectl-awscli-argocd/actions/workflows/image-build-push.yml)
 # helm-kubernetes Docker image with the AWS CLI and ArgoCD CLI
 
 This is a fork of
