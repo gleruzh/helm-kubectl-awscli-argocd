@@ -67,7 +67,7 @@ jobs:
                 "link": "https://github.com/argoproj/argo-cd/releases/tag/v${{ env.ARGOCD_VERSION }}"
               },
               {
-                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=awscli-v${{ env.AWSCLI_VERSION }}&color=232F3E&style=flat-square&logo=argo&logoColor=232F3E",
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=white&message=awscli-v${{ env.AWSCLI_VERSION }}&color=232F3E&style=flat-square&logo=amazonaws&logoColor=232F3E",
                 "alt": "AWS CLI version",
                 "link": "https://github.com/aws/aws-cli/releases/tag/${{ env.AWSCLI_VERSION }}"
               },
