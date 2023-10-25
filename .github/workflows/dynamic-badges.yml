@@ -31,8 +31,8 @@ jobs:
                 "link": "${{ env.repo_url }}/blob/master/LICENSE"
               },
               {
-                "badge": "https://img.shields.io/static/v1?label=&labelColor=black&message=helm-v${{env.HELM_RELEASE}&color=0076D6&style=flat-square&logo=helm&logoColor=blue",
+                "badge": "https://img.shields.io/static/v1?label=&labelColor=black&message=helm-v${{ env.HELM_RELEASE }}&color=0076D6&style=flat-square&logo=helm&logoColor=blue",
                 "alt": "Helm version",
-                "link": "https://github.com/helm/helm/releases/tag/v${{env.HELM_VERSION}}"
+                "link": "https://github.com/helm/helm/releases/tag/v${{ env.HELM_VERSION }}"
               }
             ]
