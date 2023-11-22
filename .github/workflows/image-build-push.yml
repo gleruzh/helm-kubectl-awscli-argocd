@@ -18,6 +18,9 @@ on:
 jobs:
   build-and-push-images:
     runs-on: ubuntu-latest
+    concurrency:
+      group: build-and-push-${{ github.repository_owner }}-${{ github.event_name }}
+      cancel-in-progress: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
