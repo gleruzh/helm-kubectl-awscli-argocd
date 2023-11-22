@@ -11,7 +11,7 @@ DOCKER_IMAGE ?= ghcr.io/gleruzh/helm-kubectl-awscli-argocd
 DOCKER_TAG ?= `git rev-parse --short HEAD`
 
 docker:
-	@docker build \
+	@docker buildx build \
 	  --build-arg KUBE_VERSION=$(KUBE_VERSION) \
 	  --build-arg HELM_VERSION=$(HELM_VERSION) \
 	  --build-arg YQ_VERSION=$(YQ_VERSION) \
