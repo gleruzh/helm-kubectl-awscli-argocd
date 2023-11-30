@@ -1,0 +1,19 @@
+name: Show Actor on PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  show-actor:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Show Actor
+      run: |
+        echo "GitHub Actor: ${{ github.actor }}"
