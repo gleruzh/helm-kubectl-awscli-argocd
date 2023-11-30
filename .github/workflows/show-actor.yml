@@ -15,4 +15,5 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Show Actor
-      run: echo "GitHub Actor: ${{ github.actor }}"
+      run: |
+        echo "GitHub Actor: ${{ github.actor }}"
