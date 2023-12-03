@@ -53,14 +53,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Run tests
         id: test_step
-        run: sleep $((RANDOM % 30)) && exit 1
+        run: sleep $((RANDOM % 30)) && exit 127
         continue-on-error: true
       - name: Comment on failure
         uses: mainmatter/continue-on-error-comment@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           outcome: ${{ steps.test_step.outcome }}
-          test-id: ${{ steps.test_step.id }}          
+          test-id: Error code 127   
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
