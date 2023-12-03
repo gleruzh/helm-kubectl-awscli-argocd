@@ -51,6 +51,17 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run tests
+        id: test_step
+        run: sleep $((RANDOM % 30)) && exit 1
+        continue-on-error: true
+      - name: Comment on failure
+        if: ${{ failure() }}
+        uses: mainmatter/continue-on-error-comment@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          outcome: ${{ steps.test_step.outcome }}
+          test-id: ${{ steps.test_step.id }}
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
