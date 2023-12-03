@@ -59,8 +59,8 @@ jobs:
         uses: mainmatter/continue-on-error-comment@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          outcome: Integration test failure
-          test-id: Error code 127   
+          outcome: ${{ steps.test_step.outcome }}
+          test-id: Integration test failed 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
