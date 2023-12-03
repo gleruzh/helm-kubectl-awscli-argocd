@@ -55,22 +55,12 @@ jobs:
         id: test_step
         run: sleep $((RANDOM % 5)) && exit 127
         continue-on-error: true
-      - name: Run tests
-        id: test_step_2
-        run: sleep $((RANDOM % 5)) && exit 127
-        continue-on-error: true
       - name: Comment on failure integration
         uses: mainmatter/continue-on-error-comment@v1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ github.token }}
           outcome: ${{ steps.test_step.outcome }}
           test-id: Integration tests failed 
-      - name: Comment on failure unit
-        uses: mainmatter/continue-on-error-comment@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          outcome: ${{ steps.test_step_2.outcome }}
-          test-id: Unit tests failed 
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
