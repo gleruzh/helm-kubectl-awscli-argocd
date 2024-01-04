@@ -33,9 +33,7 @@ jobs:
   prepare-env:
     needs:
       - is-run-allowed
-    env:
-      IS_ALLOWED: ${{ needs.is-run-allowed.outputs.IS_ALLOWED }}
-    if: IS_ALLOWED == 0
+    if: needs.is-run-allowed.outputs.IS_ALLOWED == 0
     runs-on: ubuntu-22.04
     steps:
     - name: Test
@@ -46,9 +44,7 @@ jobs:
   get-tag:
     needs:
       - is-run-allowed
-    env:
-      IS_ALLOWED: ${{ needs.is-run-allowed.outputs.IS_ALLOWED }}
-    if: IS_ALLOWED > 0
+    if: needs.is-run-allowed.outputs.IS_ALLOWED > 0
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
