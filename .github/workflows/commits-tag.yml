@@ -66,12 +66,11 @@ jobs:
     - name: Check if inputs combination is correct
       id: conclusion
       run: |
-        echo "IS_ALLOWED=$IS_ALLOWED"
-        echo "IS_CORRECT=$IS_CORRECT"
-        if [[ $IS_CORRECT && $IS_ALLOWED ]]
+        if [[ $IS_CORRECT && $IS_ALLOWED ]]; then
           echo "NOT_ALLOWED=0" >> $GITHUB_OUTPUT
         else
           echo "NOT_ALLOWED=1" >> $GITHUB_OUTPUT
+        fi
 
   prepare-env:
     needs:
