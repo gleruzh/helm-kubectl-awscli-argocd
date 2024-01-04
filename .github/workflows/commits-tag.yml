@@ -64,7 +64,7 @@ jobs:
           fi
         fi
     - name: Check if inputs combination is correct
-      id: check-inputs
+      id: conclusion
       run: |
         echo "IS_ALLOWED=$IS_ALLOWED"
         echo "IS_CORRECT=$IS_CORRECT"
