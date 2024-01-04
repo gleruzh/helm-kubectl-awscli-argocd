@@ -1,0 +1,30 @@
+name: Get tag from commit
+
+on:
+  push:
+    branches:
+      - "main"
+    paths-ignore:
+      - '**/README.md'
+  pull_request:
+    branches:
+      - "main"
+    paths-ignore:
+      - '**/README.md'
+  workflow_dispatch:
+  release:
+    types: [published, edited]
+
+jobs:
+  get-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get tag from commit
+      run: |
+        commit_id="${{ github.sha }}"
+        tags=$(git describe --abbrev=0 "$commit_id")
+        echo "GitHub Tag: $tags"
