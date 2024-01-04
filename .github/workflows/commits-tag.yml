@@ -19,9 +19,37 @@ on:
         - hotfix
         - release
 jobs:
-  get-tag:
-    runs-on: ubuntu-latest
+  is-run-allowed:
+    runs-on: ubuntu-22.04
+    outputs:
+      IS_ALLOWED: ${{ steps.check-user-list.outputs.IS_ALLOWED }}
+    steps:
+    - name: Check if actor is in allowed-users-list
+      id: check-user-list
+      run: |
+        echo "GitHub Actor: ${{ github.actor }}"
+        echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
 
+  prepare-env:
+    needs:
+      - is-run-allowed
+    env:
+      IS_ALLOWED: ${{ needs.is-run-allowed.outputs.IS_ALLOWED }}
+    if: IS_ALLOWED == 0
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Test
+      id: test-condition
+      run: |
+        echo "IS_ALLOWED=$IS_ALLOWED"
+        echo "Job is skipped"
+  get-tag:
+    needs:
+      - is-run-allowed
+    env:
+      IS_ALLOWED: ${{ needs.is-run-allowed.outputs.IS_ALLOWED }}
+    if: IS_ALLOWED > 0
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
