@@ -20,11 +20,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Get tag from commit
+    - name: Print Commit ID
       run: |
-        commit_id="${{ github.sha }}"
+        commit_id=${{ github.sha }}
         echo "$commit_id"
-        git describe "$commit_id" --tags
+
+    - name: Print Tags
+      run: git tag --list
+
+    - name: Describe Commit
+      run: git describe "$commit_id" --tags
