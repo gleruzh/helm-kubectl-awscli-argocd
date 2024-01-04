@@ -57,11 +57,11 @@ jobs:
         echo "Env: $deployment_env; type: $deployment_type"
         echo "IS_CORRECT=0" >> $GITHUB_ENV
         if [[ "$deployment_env" == "prod" ]]; then
-          if [[ $deployment_type == hotfix_* || $deployment_type == release_* ]]; then
+          if [[ $deployment_type == hotfix* || $deployment_type == release* ]]; then
             echo "IS_CORRECT=1" >> $GITHUB_ENV
           fi
         else
-          if [[ $deployment_type == hotfix_* || $deployment_type == release_* || $deployment_type == custom_* ]]; then
+          if [[ $deployment_type == hotfix* || $deployment_type == release* || $deployment_type == custom* ]]; then
             echo "IS_CORRECT=1" >> $GITHUB_ENV
           fi
         fi
@@ -76,7 +76,7 @@ jobs:
           echo "NOT_ALLOWED=1"
         fi
 
-  prepare-env:
+  empty-job:
     needs:
       - check-before-run
     if: needs.check-before-run.outputs.NOT_ALLOWED > 0
