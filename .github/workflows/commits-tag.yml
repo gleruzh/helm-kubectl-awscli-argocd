@@ -67,19 +67,19 @@ jobs:
 
   prepare-env:
     needs:
-      - is-run-allowed
-    if: needs.is-run-allowed.outputs.IS_ALLOWED == 0 || needs.is-context-correct.outputs.IS_CORRECT == 0
+      - check-before-run
+    if: needs.check-before-run.outputs.IS_ALLOWED == 0 || needs.check-before-run.outputs.IS_CORRECT == 0
     runs-on: ubuntu-22.04
     steps:
     - name: Test
       id: test-condition
       run: |
-        echo "IS_ALLOWED={{ needs.is-run-allowed.outputs.IS_ALLOWED }}"
+        echo "IS_ALLOWED={{ needs.check-before-run.outputs.IS_ALLOWED }}"
         echo "Skip useful jobs - not allowed for user"
   get-tag:
     needs:
-      - is-run-allowed
-    if: needs.is-run-allowed.outputs.IS_ALLOWED > 0
+      - check-before-run
+    if: needs.check-before-run.outputs.IS_ALLOWED > 0
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
