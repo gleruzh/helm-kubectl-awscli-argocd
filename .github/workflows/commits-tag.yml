@@ -32,4 +32,4 @@ jobs:
       run: git tag --list
 
     - name: Describe Commit
-      run: git describe "$commit_id" --tags
+      run: git describe --all
