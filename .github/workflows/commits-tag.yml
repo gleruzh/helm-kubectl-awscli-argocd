@@ -68,8 +68,10 @@ jobs:
       run: |
         if [[ $IS_CORRECT && $IS_ALLOWED ]]; then
           echo "NOT_ALLOWED=0" >> $GITHUB_OUTPUT
+          echo "NOT_ALLOWED=0"
         else
           echo "NOT_ALLOWED=1" >> $GITHUB_OUTPUT
+          echo "NOT_ALLOWED=1"
         fi
 
   prepare-env:
