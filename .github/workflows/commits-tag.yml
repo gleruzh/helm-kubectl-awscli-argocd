@@ -21,7 +21,8 @@ on:
         - release
         - hotfix
 env:
-  ALLOWED_USERS: ${{ vars.prod.ALLOWED_USERS }}
+  ALLOWED_USERS: ${{ vars.ALLOWED_USERS }}
+  ALLOWED_USERS_PROD: ${{ vars.prod.ALLOWED_USERS }}
   ALLOWED_USERS_DEV: ${{ vars.dev.ALLOWED_USERS }}
 jobs:
   is-run-allowed:
