@@ -26,5 +26,5 @@ jobs:
     - name: Get tag from commit
       run: |
         commit_id="${{ github.sha }}"
-        tags=$(git describe --abbrev=0 "$commit_id" --tags)
-        echo "GitHub Tag: $tags"
+        echo "$commit_id"
+        git describe --abbrev=0 "$commit_id" --tags
