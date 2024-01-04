@@ -33,7 +33,7 @@ jobs:
       run: |
         actor=${{ github.actor }}
         echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
-        readarray -t users_list <<< "$ALLOWED_USERS"
+        IFS=';' read -ra users_list <<< "$ALLOWED_USERS"
         for user in "${users_list[@]}"; do
           if $user == $actor; then
             echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
