@@ -1,20 +1,25 @@
 name: Get tag from commit
 
 on:
-  push:
-    branches:
-      - "main"
-    paths-ignore:
-      - '**/README.md'
-  pull_request:
-    branches:
-      - "main"
-    paths-ignore:
-      - '**/README.md'
   workflow_dispatch:
   release:
     types: [published, edited]
-
+    inputs:
+      app: 
+        type: choice
+        description: Select the app to build
+        required: true
+        options:
+        - all
+        - affected
+      type: 
+        type: choice
+        description: Select the build type
+        required: true
+        options:
+        - custom
+        - hotfix
+        - release
 jobs:
   get-tag:
     runs-on: ubuntu-latest
