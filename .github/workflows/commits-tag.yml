@@ -10,14 +10,18 @@ on:
         options:
         - all
         - affected
+        - frontend
+        - backend
       type: 
         type: choice
         description: Select the build type
         required: true
         options:
         - custom
-        - hotfix
         - release
+        - hotfix
+env:
+  ALLOWED_USERS: ${{ vars.ALLOWED_USERS }}
 jobs:
   is-run-allowed:
     runs-on: ubuntu-22.04
@@ -27,7 +31,9 @@ jobs:
     - name: Check if actor is in allowed-users-list
       id: check-user-list
       run: |
-        echo "GitHub Actor: ${{ github.actor }}"
+        actor=${{ github.actor }}
+        echo "Allowed users list: $ALLOWED_USERS"
+        echo "GitHub Actor: $actor"
         echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
 
   prepare-env:
@@ -40,7 +46,7 @@ jobs:
       id: test-condition
       run: |
         echo "IS_ALLOWED=$IS_ALLOWED"
-        echo "Job is skipped"
+        echo "Job is not skipped"
   get-tag:
     needs:
       - is-run-allowed
