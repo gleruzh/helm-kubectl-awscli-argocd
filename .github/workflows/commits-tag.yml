@@ -35,11 +35,11 @@ jobs:
         echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
         IFS=';' read -ra users_list <<< "$ALLOWED_USERS"
         for user in "${users_list[@]}"; do
-          if $user == $actor; then
+          if [[ "$user" == "$actor" ]]; then
             echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
           fi
         done
-
+        
   prepare-env:
     needs:
       - is-run-allowed
