@@ -69,11 +69,11 @@ jobs:
       id: conclusion
       run: |
         if [[ $IS_CORRECT_INPUTS == 1 && $IS_ALLOWED_FOR_USER == 1 ]]; then
-          echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
-          echo "IS_ALLOWED=0"
-        else
           echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
           echo "IS_ALLOWED=1"
+        else
+          echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
+          echo "IS_ALLOWED=0"
         fi
 
   empty-job:
@@ -85,7 +85,7 @@ jobs:
     - name: Test
       id: test-condition
       run: |
-        echo "IS_ALLOWED={{ needs.check-before-run.outputs.IS_ALLOWED }}"
+        echo "IS_ALLOWED=${{ needs.check-before-run.outputs.IS_ALLOWED }}"
         echo "Skip useful jobs - not allowed for user or wrong combination of env and deployment type"
   get-tag:
     needs:
