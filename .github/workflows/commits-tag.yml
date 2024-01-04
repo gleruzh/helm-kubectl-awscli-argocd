@@ -79,7 +79,7 @@ jobs:
   get-tag:
     needs:
       - check-before-run
-    if: needs.check-before-run.outputs.IS_ALLOWED > 0
+    if: needs.check-before-run.outputs.IS_ALLOWED > 0 && needs.check-before-run.outputs.IS_CORRECT > 0
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
