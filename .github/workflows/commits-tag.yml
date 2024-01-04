@@ -65,7 +65,7 @@ jobs:
             echo "IS_CORRECT=1" >> $GITHUB_ENV
           fi
         fi
-    - name: Check if inputs combination is correct
+    - name: Final check
       id: conclusion
       run: |
         if [[ $IS_CORRECT == 1 && $IS_ALLOWED == 1 ]]; then
@@ -79,14 +79,14 @@ jobs:
   prepare-env:
     needs:
       - check-before-run
-    if: needs.check-before-run.outputs.NOT_ALLOWED > 1
+    if: needs.check-before-run.outputs.NOT_ALLOWED > 0
     runs-on: ubuntu-22.04
     steps:
     - name: Test
       id: test-condition
       run: |
         echo "IS_ALLOWED={{ needs.check-before-run.outputs.IS_ALLOWED }}"
-        echo "Skip useful jobs - not allowed for user"
+        echo "Skip useful jobs - not allowed for user or wrong combination of env and deployment type"
   get-tag:
     needs:
       - check-before-run
@@ -98,5 +98,6 @@ jobs:
 
     - name: show GITHUB_REF_NAME
       run: |
-        echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-        echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+        echo $GITHUB_REF_NAME
+        tag=$GITHUB_REF_NAME
+        echo "Tag name from GITHUB_REF_NAME: $tag"
