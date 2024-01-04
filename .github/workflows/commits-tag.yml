@@ -22,8 +22,6 @@ on:
         - hotfix
 env:
   ALLOWED_USERS: ${{ vars.ALLOWED_USERS }}
-  ALLOWED_USERS_PROD: ${{ vars.prod.ALLOWED_USERS }}
-  ALLOWED_USERS_DEV: ${{ vars.dev.ALLOWED_USERS }}
 jobs:
   is-run-allowed:
     runs-on: ubuntu-22.04
@@ -34,9 +32,13 @@ jobs:
       id: check-user-list
       run: |
         actor=${{ github.actor }}
-        echo -e "Allowed users list: $ALLOWED_USERS\n $ALLOWED_USERS_DEV"
-        echo "GitHub Actor: $actor"
         echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
+        readarray -t users_list <<< "$ALLOWED_USERS"
+        for user in "${users_list[@]}"; do
+          if $user == $actor; then
+            echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
+          fi
+        done
 
   prepare-env:
     needs:
