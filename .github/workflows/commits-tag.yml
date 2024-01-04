@@ -35,18 +35,18 @@ jobs:
   check-before-run:
     runs-on: ubuntu-22.04
     outputs:
-      NOT_ALLOWED: ${{ steps.conclusion.outputs.NOT_ALLOWED }}
+      IS_ALLOWED: ${{ steps.conclusion.outputs.IS_ALLOWED }}
     steps:
     - name: Check if actor is in allowed-users-list
       id: check-user-list
       run: |
         actor=${{ github.actor }}
         echo "Actor: $actor"
-        echo "IS_ALLOWED=0" >> $GITHUB_ENV
+        echo "IS_ALLOWED_FOR_USER=0" >> $GITHUB_ENV
         IFS=';' read -ra users_list <<< "$ALLOWED_USERS"
         for user in "${users_list[@]}"; do
           if [[ "$user" == "$actor" ]]; then
-            echo "IS_ALLOWED=1" >> $GITHUB_ENV
+            echo "IS_ALLOWED_FOR_USER=1" >> $GITHUB_ENV
           fi
         done
     - name: Check if inputs combination is correct
@@ -55,31 +55,31 @@ jobs:
         deployment_type=${{ inputs.type }}
         deployment_env=${{ inputs.environment }}
         echo "Env: $deployment_env; type: $deployment_type"
-        echo "IS_CORRECT=0" >> $GITHUB_ENV
+        echo "IS_CORRECT_INPUTS=0" >> $GITHUB_ENV
         if [[ "$deployment_env" == "prod" ]]; then
           if [[ $deployment_type == hotfix* || $deployment_type == release* ]]; then
-            echo "IS_CORRECT=1" >> $GITHUB_ENV
+            echo "IS_CORRECT_INPUTS=1" >> $GITHUB_ENV
           fi
         else
           if [[ $deployment_type == hotfix* || $deployment_type == release* || $deployment_type == custom* ]]; then
-            echo "IS_CORRECT=1" >> $GITHUB_ENV
+            echo "IS_CORRECT_INPUTS=1" >> $GITHUB_ENV
           fi
         fi
     - name: Final check
       id: conclusion
       run: |
-        if [[ $IS_CORRECT == 1 && $IS_ALLOWED == 1 ]]; then
-          echo "NOT_ALLOWED=0" >> $GITHUB_OUTPUT
-          echo "NOT_ALLOWED=0"
+        if [[ $IS_CORRECT_INPUTS == 1 && $IS_ALLOWED_FOR_USER == 1 ]]; then
+          echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
+          echo "IS_ALLOWED=0"
         else
-          echo "NOT_ALLOWED=1" >> $GITHUB_OUTPUT
-          echo "NOT_ALLOWED=1"
+          echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
+          echo "IS_ALLOWED=1"
         fi
 
   empty-job:
     needs:
       - check-before-run
-    if: needs.check-before-run.outputs.NOT_ALLOWED > 0
+    if: needs.check-before-run.outputs.IS_ALLOWED > 0
     runs-on: ubuntu-22.04
     steps:
     - name: Test
@@ -90,7 +90,7 @@ jobs:
   get-tag:
     needs:
       - check-before-run
-    if: needs.check-before-run.outputs.NOT_ALLOWED == 0
+    if: needs.check-before-run.outputs.IS_ALLOWED == 0
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
