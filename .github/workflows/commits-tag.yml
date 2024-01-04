@@ -20,13 +20,23 @@ on:
         - custom
         - release
         - hotfix
+        - other
+      environment: 
+        type: choice
+        description: Select the deployment environment
+        required: true
+        options:
+        - prod
+        - dev
+        - qa
 env:
   ALLOWED_USERS: ${{ vars.ALLOWED_USERS }}
 jobs:
-  is-run-allowed:
+  check-before-run:
     runs-on: ubuntu-22.04
     outputs:
       IS_ALLOWED: ${{ steps.check-user-list.outputs.IS_ALLOWED }}
+      IS_CORRECT: ${{ steps.check-inputs.outputs.IS_CORRECT }}
     steps:
     - name: Check if actor is in allowed-users-list
       id: check-user-list
@@ -39,18 +49,33 @@ jobs:
             echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
           fi
         done
-        
+    - name: Check if inputs combination is correct
+      id: check-inputs
+      run: |
+        deployment_type=${{ inputs.type }}
+        deployment_env=${{ inputs.environment }}
+        echo "IS_CORRECT=0" >> $GITHUB_OUTPUT
+        if [[ "$deployment_env" == "prod" ]]; then
+          if [[ $deployment_type == hotfix_* || $deployment_type == release_* ]]; then
+            echo "IS_CORRECT=1" >> $GITHUB_OUTPUT
+          fi
+        else
+          if [[ $deployment_type == hotfix_* || $deployment_type == release_* || $deployment_type == custom_* ]]; then
+            echo "IS_CORRECT=1" >> $GITHUB_OUTPUT
+          fi
+        fi
+
   prepare-env:
     needs:
       - is-run-allowed
-    if: needs.is-run-allowed.outputs.IS_ALLOWED == 0
+    if: needs.is-run-allowed.outputs.IS_ALLOWED == 0 || needs.is-context-correct.outputs.IS_CORRECT == 0
     runs-on: ubuntu-22.04
     steps:
     - name: Test
       id: test-condition
       run: |
         echo "IS_ALLOWED={{ needs.is-run-allowed.outputs.IS_ALLOWED }}"
-        echo "Job is not skipped"
+        echo "Skip useful jobs - not allowed for user"
   get-tag:
     needs:
       - is-run-allowed
@@ -58,18 +83,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Print Commit ID
-      run: |
-        commit_id=${{ github.sha }}
-        echo "$commit_id"
-
-    - name: Print Tags
-      run: git tag --list
-
-    - name: Describe Commit
-      run: git describe --all
+      uses: actions/checkout@v4
 
     - name: show GITHUB_REF_NAME
       run: |
