@@ -35,18 +35,17 @@ jobs:
   check-before-run:
     runs-on: ubuntu-22.04
     outputs:
-      IS_ALLOWED: ${{ steps.check-user-list.outputs.IS_ALLOWED }}
-      IS_CORRECT: ${{ steps.check-inputs.outputs.IS_CORRECT }}
+      NOT_ALLOWED: ${{ steps.conclusion.outputs.NOT_ALLOWED }}
     steps:
     - name: Check if actor is in allowed-users-list
       id: check-user-list
       run: |
         actor=${{ github.actor }}
-        echo "IS_ALLOWED=0" >> $GITHUB_OUTPUT
+        echo "IS_ALLOWED=0" >> $GITHUB_ENV
         IFS=';' read -ra users_list <<< "$ALLOWED_USERS"
         for user in "${users_list[@]}"; do
           if [[ "$user" == "$actor" ]]; then
-            echo "IS_ALLOWED=1" >> $GITHUB_OUTPUT
+            echo "IS_ALLOWED=1" >> $GITHUB_ENV
           fi
         done
     - name: Check if inputs combination is correct
@@ -54,21 +53,30 @@ jobs:
       run: |
         deployment_type=${{ inputs.type }}
         deployment_env=${{ inputs.environment }}
-        echo "IS_CORRECT=0" >> $GITHUB_OUTPUT
+        echo "IS_CORRECT=0" >> $GITHUB_ENV
         if [[ "$deployment_env" == "prod" ]]; then
           if [[ $deployment_type == hotfix_* || $deployment_type == release_* ]]; then
-            echo "IS_CORRECT=1" >> $GITHUB_OUTPUT
+            echo "IS_CORRECT=1" >> $GITHUB_ENV
           fi
         else
           if [[ $deployment_type == hotfix_* || $deployment_type == release_* || $deployment_type == custom_* ]]; then
-            echo "IS_CORRECT=1" >> $GITHUB_OUTPUT
+            echo "IS_CORRECT=1" >> $GITHUB_ENV
           fi
         fi
+    - name: Check if inputs combination is correct
+      id: check-inputs
+      run: |
+        echo "IS_ALLOWED=$IS_ALLOWED"
+        echo "IS_CORRECT=$IS_CORRECT"
+        if [[ $IS_CORRECT && $IS_ALLOWED ]]
+          echo "NOT_ALLOWED=0" >> $GITHUB_OUTPUT
+        else
+          echo "NOT_ALLOWED=1" >> $GITHUB_OUTPUT
 
   prepare-env:
     needs:
       - check-before-run
-    if: needs.check-before-run.outputs.IS_ALLOWED == 0 || needs.check-before-run.outputs.IS_CORRECT == 0
+    if: needs.check-before-run.outputs.NOT_ALLOWED > 1
     runs-on: ubuntu-22.04
     steps:
     - name: Test
@@ -79,7 +87,7 @@ jobs:
   get-tag:
     needs:
       - check-before-run
-    if: needs.check-before-run.outputs.IS_ALLOWED > 0 && needs.check-before-run.outputs.IS_CORRECT > 0
+    if: needs.check-before-run.outputs.NOT_ALLOWED == 0
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout code
