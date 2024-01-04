@@ -27,4 +27,4 @@ jobs:
       run: |
         commit_id="${{ github.sha }}"
         echo "$commit_id"
-        git describe --abbrev=0 "$commit_id" --tags
+        git describe "$commit_id" --tags
