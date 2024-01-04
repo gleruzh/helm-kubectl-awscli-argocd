@@ -2,8 +2,6 @@ name: Get tag from commit
 
 on:
   workflow_dispatch:
-  release:
-    types: [published, edited]
     inputs:
       app: 
         type: choice
