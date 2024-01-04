@@ -54,7 +54,7 @@ jobs:
       run: |
         deployment_type=${{ inputs.type }}
         deployment_env=${{ inputs.environment }}
-        echo "Env: deployment_env; type: deployment_type"
+        echo "Env: $deployment_env; type: $deployment_type"
         echo "IS_CORRECT=0" >> $GITHUB_ENV
         if [[ "$deployment_env" == "prod" ]]; then
           if [[ $deployment_type == hotfix_* || $deployment_type == release_* ]]; then
@@ -70,8 +70,10 @@ jobs:
       run: |
         if [[ $IS_CORRECT == 1 && $IS_ALLOWED == 1 ]]; then
           echo "NOT_ALLOWED=0" >> $GITHUB_OUTPUT
+          echo "NOT_ALLOWED=0"
         else
           echo "NOT_ALLOWED=1" >> $GITHUB_OUTPUT
+          echo "NOT_ALLOWED=1"
         fi
 
   prepare-env:
